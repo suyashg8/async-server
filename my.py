@@ -3,16 +3,16 @@ from responses import JSONResponse, Response
 from responses import Http404
 from templates import Template
 
-def jsu(request):
+async def jsu(request):
   return JSONResponse({'first':'resp', 'hello':'world', 'yay':'yuppie'})
 
-def nojsu(request):
+async def nojsu(request):
   if request.POST:
     return Response('text/html', "<p style='color:#d3d3d3'>{}</p>".format(str(request.POST)))
   else:
     return Response('text/html', "<p style='color:#d3d3d3'>Getter</p>")
     
-def ep(request):
+async def ep(request):
   if not request.GET:
     return Http404()
   else:
@@ -21,7 +21,7 @@ def ep(request):
       q = cur.fetchall()
       return JSONResponse({'id':q[0][0], 'value': q[0][1]})
 
-def nm(request):
+async def nm(request):
   t = Template('test.html')
   
   return t.render({'name':'piyush', 'name2':'rungta'})

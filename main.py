@@ -1,13 +1,14 @@
 import asyncio
-from io import StringIO
 from responses import Response, JSONResponse, Http404
 from request import Request
-from utils import match_url
+from functools import partial
+from handler import Handler
 
 class EchoServerClientProtocol(asyncio.Protocol):
     
-    def __init__(self, urls):
-        self.urls = urls
+    def __init__(self, handler, loop):
+        self.handler = handler
+        self.loop = loop
     
     def connection_made(self, transport):
         # peername = transport.get_extra_info('peername')
@@ -19,16 +20,9 @@ class EchoServerClientProtocol(asyncio.Protocol):
         
         # do your thang
         req = Request(message)
-        view = match_url(self.urls, req.headers['path'])
-        # check if valid handler
-        if not view:
-            resp = Http404()
-        else:
-            resp = view(req)
-        self.transport.write(resp.make_response())
+        # coro = partial(self.handler.handle, req, self.transport)
+        co = self.loop.create_task(self.handler.handle(req, self.transport))
         
-        print('Close the client socket')
-        self.transport.close()
 
 
 class App:
@@ -39,10 +33,10 @@ class App:
     def start_server(self):
             
         loop = asyncio.get_event_loop()
-        # loop.set_debug(True)
+        handler = Handler(self.urls)
         
         # Each client connection will create a new protocol instance
-        coro = loop.create_server(lambda: EchoServerClientProtocol(self.urls), '127.0.0.1', 8888)
+        coro = loop.create_server(lambda: EchoServerClientProtocol(handler, loop), '127.0.0.1', 8888)
         server = loop.run_until_complete(coro)
 
         # Serve requests until Ctrl+C is pressed
