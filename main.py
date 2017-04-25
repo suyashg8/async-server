@@ -57,3 +57,8 @@ class App:
         server.close()
         loop.run_until_complete(server.wait_closed())
         loop.close()
+    
+    def init_db(self, db_name):
+        from db import DB
+        db = DB(db_name)
+        self.conn = db.get_conn()
