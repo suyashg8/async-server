@@ -10,8 +10,8 @@ class EchoServerClientProtocol(asyncio.Protocol):
         self.urls = urls
     
     def connection_made(self, transport):
-        peername = transport.get_extra_info('peername')
-        print('Connection from {}'.format(peername))
+        # peername = transport.get_extra_info('peername')
+        # print('Connection from {}'.format(peername))
         self.transport = transport
 
     def data_received(self, data):
