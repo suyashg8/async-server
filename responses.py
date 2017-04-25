@@ -38,6 +38,11 @@ class JSONResponse(Response):
 
     super(JSONResponse, self).__init__('application/json', content)
 
+class HTMLResponse(Response):
+  
+  def __init__(self, content):
+    super(HTMLResponse, self).__init__('text/html', content)
+
 class Http404(Response):
   def __init__(self, content=''):
     super(Http404, self).__init__('application/json', content)

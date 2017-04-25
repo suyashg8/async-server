@@ -1,6 +1,7 @@
 from main import App
 from responses import JSONResponse, Response
 from responses import Http404
+from templates import Template
 
 def jsu(request):
   return JSONResponse({'first':'resp', 'hello':'world', 'yay':'yuppie'})
@@ -20,11 +21,16 @@ def ep(request):
       q = cur.fetchall()
       return JSONResponse({'id':q[0][0], 'value': q[0][1]})
 
+def nm(request):
+  t = Template('test.html')
+  
+  return t.render({'name':'piyush', 'name2':'rungta'})
 
 urls = [
         ('/hello', jsu),
         ('/post', nojsu),
         ('/ep', ep),
+        ('/nm', nm),
         ]
 
 app = App(urls)
