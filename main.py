@@ -19,6 +19,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
         
         # do your thang
         req = Request(message)
+        print(req.headers['full_path'])
         view = match_url(self.urls, req.headers['path'])
         # check if valid handler
         if not view:
@@ -27,7 +28,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
             resp = view(req)
         self.transport.write(resp.make_response())
         
-        print('Close the client socket')
+        
         self.transport.close()
 
 
