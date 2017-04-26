@@ -1,4 +1,6 @@
 import psycopg2 as pg
+import asyncio
+import asyncpg
 
 class DB:
   
@@ -7,10 +9,10 @@ class DB:
     self.conn = None
   
   
-  def get_conn(self):
+  async def get_conn(self):
     
     if not self.conn :
-      self.conn = pg.connect("dbname=async_test_db")
-    
+      self.conn = await asyncpg.connect(database=self.db_name)
     return self.conn
+
     

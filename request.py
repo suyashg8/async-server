@@ -8,13 +8,13 @@ class Request:
     request_line, headers_alone = req.split('\r\n', 1)
     message = email.message_from_file(StringIO(headers_alone))
     headers = dict(message.items())
-    headers['method'], headers['path'], headers['http-version'] = request_line.split()    
+    headers['method'], headers['full_path'], headers['http-version'] = request_line.split()    
     
-    GET = parse_qs(urlparse(headers['path']).query)
+    GET = parse_qs(urlparse(headers['full_path']).query)
     post_qs = req.split('\r\n')[-1]
     POST = parse_qs(post_qs)
     
-    headers['path'] = headers['path'].split('?')[0]
+    headers['path'] = headers['full_path'].split('?')[0]
     
     self.headers = headers
     self.full_req_string = req

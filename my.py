@@ -1,3 +1,4 @@
+import asyncio
 from main import App
 from responses import JSONResponse, Response
 from responses import Http404
@@ -16,10 +17,8 @@ async def ep(request):
   if not request.GET:
     return Http404()
   else:
-    with app.conn.cursor() as cur:
-      cur.execute('select * from test_data where id = %s' % request.GET['id'][0])
-      q = cur.fetchall()
-      return JSONResponse({'id':q[0][0], 'value': q[0][1]})
+    q = await app.conn.fetch('select * from test_data where id = %s' % request.GET['id'][0])
+    return JSONResponse({'id':q[0][0], 'value': q[0][1]})
 
 async def nm(request):
   t = Template('test.html')
@@ -34,5 +33,4 @@ urls = [
         ]
 
 app = App(urls)
-app.init_db('async_test_db')
 app.start_server()

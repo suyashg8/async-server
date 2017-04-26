@@ -20,6 +20,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
         
         # do your thang
         req = Request(message)
+        print(req.headers['full_path'])
         # coro = partial(self.handler.handle, req, self.transport)
         co = self.loop.create_task(self.handler.handle(req, self.transport))
         
@@ -33,6 +34,7 @@ class App:
     def start_server(self):
             
         loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.init_db('async_test_db'))
         handler = Handler(self.urls)
         
         # Each client connection will create a new protocol instance
@@ -52,7 +54,8 @@ class App:
         loop.run_until_complete(server.wait_closed())
         loop.close()
     
-    def init_db(self, db_name):
+    async def init_db(self, db_name):
         from db import DB
         db = DB(db_name)
-        self.conn = db.get_conn()
+        self.conn = await db.get_conn()
+        
