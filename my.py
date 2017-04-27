@@ -28,7 +28,7 @@ async def nm(request):
 urls = [
         ('/hello', jsu),
         ('/post', nojsu),
-        ('/ep', ep),
+        ('/epp', ep),
         ('/nm', nm),
         ]
 
