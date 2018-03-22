@@ -43,7 +43,7 @@ class App:
         # loop.set_debug(True)
         
         # Each client connection will create a new protocol instance
-        coro = loop.create_server(lambda: EchoServerClientProtocol(self.urls), '127.0.0.1', 8011)
+        coro = loop.create_server(lambda: EchoServerClientProtocol(self.urls), '127.0.0.1', 8012)
         server = loop.run_until_complete(coro)
 
         # Serve requests until Ctrl+C is pressed
