@@ -12,7 +12,7 @@ class DB:
   async def get_conn(self):
     
     if not self.conn :
-      self.conn = await asyncpg.connect(database=self.db_name)
+      self.conn = await asyncpg.connect(user='postgres',password='suyash',database=self.db_name)
     return self.conn
 
     
