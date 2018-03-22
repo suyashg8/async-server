@@ -24,7 +24,7 @@ def ep(request):
 def nm(request):
   t = Template('test.html')
   
-  return t.render({'name':'piyush', 'name2':'rungta'})
+  return t.render({'name':'suyash', 'name2':'gupta'})
 
 urls = [
         ('/hello', jsu),

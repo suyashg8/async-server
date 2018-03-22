@@ -10,7 +10,7 @@ class DB:
   def get_conn(self):
     
     if not self.conn :
-      self.conn = pg.connect("dbname=async_test_db")
+      self.conn = pg.connect(user='postgres',password='suyash',database=self.db_name)
     
     return self.conn
     
