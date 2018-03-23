@@ -17,7 +17,7 @@ async def ep(request):
   if not request.GET:
     return Http404()
   else:
-    q = await app.conn.fetch('select * from test_data where id = %s' % request.GET['id'][0])
+    q = await app.conn.fetch('select * from test_data where unique_id = %s' % request.GET['id'][0])
     return JSONResponse({'id':q[0][0], 'value': q[0][1]})
 
 async def nm(request):
